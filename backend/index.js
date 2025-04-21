@@ -1,7 +1,8 @@
-import express from "express";
+import express, { request } from "express";
 import config from "./config.js";
 import mongoose from "mongoose";
 import { Book } from "./models/bookModel.js";
+import e from "express";
 
 const app = express();
 
@@ -61,6 +62,47 @@ app.get("/books", async (request, response) => {
   } catch (error) {
     console.log(error);
     return response.status(500).send({ message: error.message });
+  }
+});
+
+// Route to update a book by ID in the mongoDB database
+
+app.put("/books/:id", async (request, response) => {
+  try {
+    if (
+      !request.body.title ||
+      !request.body.author ||
+      !request.body.publishYear
+    ) {
+      return response.status(400).send({ message: "Please fill all fields" });
+    }
+
+    const { id } = request.params;
+    const result = await Book.findByIdAndUpdate(id, request.body);
+
+    if (!result) {
+      return response.status(404).send({ message: "Book not found" });
+    }
+    return response.status(200).send({ message: "Book updated" });
+  } catch (error) {
+    console.log(error.message);
+    response.status(500).send({ message: error.message });
+  }
+});
+
+// Route to delete a book by ID in the mongoDB database
+app.delete("/books/:id", async (request, response) => {
+  try {
+    const { id } = request.params;
+
+    const result = await Book.findByIdAndDelete(id);
+    if (!result) {
+      return response.status(404).send({ message: "Book not found" });
+    }
+    return response.status(200).send({ message: "Book deleted" });
+  } catch (error) {
+    console.log(error.message);
+    response.status(500).send({ message: error.message });
   }
 });
 
