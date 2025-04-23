@@ -42,7 +42,16 @@ router.get("/:id", async (request, response) => {
 // Route to get all books from the mongoDB database
 router.get("/", async (request, response) => {
   try {
-    const books = await Book.find({});
+    const { search } = request.query;
+    const query = search
+      ? {
+          $or: [
+            { title: { $regex: search, $options: "i" } },
+            { author: { $regex: search, $options: "i" } },
+          ],
+        }
+      : {};
+    const books = await Book.find(query);
     return response.status(200).json({
       count: books.length,
       data: books,
