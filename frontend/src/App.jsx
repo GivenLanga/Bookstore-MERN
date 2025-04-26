@@ -68,18 +68,39 @@ const App = () => {
             <Route path="/books/details/:id" element={<ShowBook />} />
             <Route path="/books/edit/:id" element={<EditBook />} />
             <Route path="/books/delete/:id" element={<DeleteBook />} />
+            <Route path="*" element={<Navigate to="/" />} />{" "}
+            {/* Redirect invalid routes */}
           </>
         ) : (
           <>
             <Route path="/userDashBoard" element={<UserDashBoard />} />
-            <Route path="*" element={<Navigate to="/userDashBoard" />} />
             <Route path="/userDashBoard/profile" element={<Profile />} />
             <Route path="/userDashBoard/wishlist" element={<WishList />} />
             <Route path="/userDashBoard/cart" element={<Cart />} />
             <Route path="/userDashBoard/search" element={<Search />} />
+            <Route path="*" element={<Navigate to="/userDashBoard" />} />{" "}
+            {/* Redirect invalid routes */}
           </>
         )}
       </Routes>
+      <button
+        onClick={() => {
+          localStorage.removeItem("isAdmin");
+          setIsAdmin(null);
+        }}
+        style={{
+          position: "fixed",
+          bottom: "10px",
+          right: "10px",
+          padding: "10px",
+          backgroundColor: "red",
+          color: "white",
+          border: "none",
+          cursor: "pointer",
+        }}
+      >
+        Reset Admin Prompt
+      </button>
     </Provider>
   );
 };

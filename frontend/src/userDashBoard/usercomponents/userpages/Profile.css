@@ -1,0 +1,153 @@
+.profile__page {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  height: 100vh;
+  background-color: black;
+}
+
+.profile__left {
+  flex: 1;
+  background-color: #212121;
+  display: flex;
+  flex-direction: row;
+  padding: 20px;
+  gap: 40px;
+}
+
+.profile__section {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  border: solid 1px rgb(255, 255, 255);
+  border-radius: 20px;
+  background-color: #e8e8e8;
+  /* Enhanced shadow: soft blue and purple glows for depth and color harmony */
+  box-shadow: 0 4px 32px 0 rgba(60, 80, 180, 0.18),
+    /* blue glow */ 0 1.5px 8px 0 rgba(120, 60, 180, 0.1),
+    /* purple glow */ 0 0 16px 2px #a5a79e88,
+    /* original soft shadow */ 0 2px 16px 0 #21212144; /* original dark shadow */
+  position: relative; /* Added for absolute positioning of .btn-shine */
+  padding-bottom: 40px; /* Add space for the p tag */
+}
+
+.profile__cart,
+.profile__wish,
+.profile__sale {
+  display: flex;
+  justify-content: center;
+  padding-top: 10px;
+  /* No changes here, keeps Cart centered */
+}
+
+.profile__right {
+  align-items: center !important;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  color: #e8e8e8;
+  gap: 60px;
+  border-radius: 5px;
+}
+
+.profile__items {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+.profile__items:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+.spanItem__left {
+  font-size: 35px !important;
+}
+
+.profile__right:hover {
+  flex: 0.12;
+}
+
+.profile__right h4 {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.profile__right:hover h4 {
+  display: block;
+  opacity: 1;
+}
+
+.profile__items > h4 {
+  font-size: 25px;
+}
+
+.btn-shine {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 12px 48px;
+  color: #fff;
+  background: linear-gradient(to right, #9f9f9f 0, #fff 10%, #868686 20%);
+  background-position: 0;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 3s infinite linear;
+  animation-fill-mode: forwards;
+  -webkit-text-size-adjust: none;
+  font-weight: 600;
+  font-size: 16px;
+  text-decoration: none;
+  white-space: nowrap;
+  font-family: "Poppins", sans-serif;
+}
+@-moz-keyframes shine {
+  0% {
+    background-position: 0;
+  }
+  60% {
+    background-position: 180px;
+  }
+  100% {
+    background-position: 180px;
+  }
+}
+@-webkit-keyframes shine {
+  0% {
+    background-position: 0;
+  }
+  60% {
+    background-position: 180px;
+  }
+  100% {
+    background-position: 180px;
+  }
+}
+@-o-keyframes shine {
+  0% {
+    background-position: 0;
+  }
+  60% {
+    background-position: 180px;
+  }
+  100% {
+    background-position: 180px;
+  }
+}
+@keyframes shine {
+  0% {
+    background-position: 0;
+  }
+  60% {
+    background-position: 180px;
+  }
+  100% {
+    background-position: 180px;
+  }
+}

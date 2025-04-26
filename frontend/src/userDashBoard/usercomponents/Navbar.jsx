@@ -26,11 +26,11 @@ function Navbar() {
     <nav className="nav">
       <div className="nav__left">
         <span className="nav__logo">BookVerse</span>
-        <span className="home">
+        {/* <span className="home">
           <Tooltip title="Home" arrow>
             <HomeIcon style={{ marginRight: "5px" }} />
           </Tooltip>
-        </span>
+        </span> */}
       </div>
       <div className="nav__middle">
         <input
@@ -48,7 +48,7 @@ function Navbar() {
       </div>
       <div className="nav__right">
         <Link to="/userDashBoard/cart">
-          <span className="cart">
+          <span className="cart-span">
             <Tooltip title="Cart" arrow>
               <ShoppingCartIcon style={{ marginRight: "5px" }} />
             </Tooltip>
@@ -57,7 +57,7 @@ function Navbar() {
 
         <Link to="/userDashBoard/wishlist">
           <span className="wishlist">
-            <Tooltip title="WishList" arrow>
+            <Tooltip title="WishList-icon" arrow>
               <FavoriteIcon style={{ marginRight: "5px" }} />
             </Tooltip>
           </span>
@@ -66,7 +66,7 @@ function Navbar() {
         <Link to="/userDashBoard/profile">
           {" "}
           {/* Ensure this matches the route in App.jsx */}
-          <span className="profile">
+          <span className="profile-span">
             <Tooltip title="Profile" arrow>
               <AccountCircleIcon style={{ marginRight: "5px" }} />
             </Tooltip>
