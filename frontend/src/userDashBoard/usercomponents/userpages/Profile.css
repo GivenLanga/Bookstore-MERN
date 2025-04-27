@@ -18,17 +18,18 @@
 .profile__section {
   display: flex;
   flex: 1;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
   border: solid 1px rgb(255, 255, 255);
   border-radius: 20px;
   background-color: #e8e8e8;
-  /* Enhanced shadow: soft blue and purple glows for depth and color harmony */
+  gap: 40px;
   box-shadow: 0 4px 32px 0 rgba(60, 80, 180, 0.18),
-    /* blue glow */ 0 1.5px 8px 0 rgba(120, 60, 180, 0.1),
-    /* purple glow */ 0 0 16px 2px #a5a79e88,
-    /* original soft shadow */ 0 2px 16px 0 #21212144; /* original dark shadow */
-  position: relative; /* Added for absolute positioning of .btn-shine */
-  padding-bottom: 40px; /* Add space for the p tag */
+    0 1.5px 8px 0 rgba(120, 60, 180, 0.1), 0 0 16px 2px #a5a79e88,
+    0 2px 16px 0 #21212144;
+  position: relative;
+  padding-bottom: 40px;
+  overflow-y: auto;
 }
 
 .profile__cart,
@@ -37,7 +38,10 @@
   display: flex;
   justify-content: center;
   padding-top: 10px;
-  /* No changes here, keeps Cart centered */
+  position: sticky;
+  top: 0;
+  background: #e8e8e8;
+  z-index: 2;
 }
 
 .profile__right {
@@ -150,4 +154,89 @@
   100% {
     background-position: 180px;
   }
+}
+
+.profile__cart-items-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  height: 100%;
+  max-height: 320px;
+  width: 100%;
+
+  padding-right: 4px;
+  margin-top: 1rem;
+}
+
+.profile__cart-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #f7f7f7;
+  border-radius: 6px;
+  padding: 0.5rem;
+  cursor: pointer;
+  position: relative;
+  width: 95%;
+  min-width: 220px;
+  max-width: 320px;
+  box-sizing: border-box;
+  transition: box-shadow 0.2s;
+}
+
+.profile__cart-item:hover {
+  box-shadow: 0 2px 8px 0 #a5a79e44;
+}
+
+.profile__cart-book-small .profile__cart-img {
+  width: 48px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.profile__cart-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.profile__cart-title {
+  font-size: 1rem;
+  margin: 0;
+  font-weight: 600;
+  color: #222;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profile__cart-author {
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.profile__cart-price {
+  font-size: 0.95rem;
+  color: #2a4365;
+  font-weight: 500;
+}
+
+.profile__cart-actions {
+  margin-left: 0.5rem;
+}
+
+.profile__cart-remove-btn {
+  background: none;
+  border: none;
+  color: #e53e3e;
+  cursor: pointer;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+
+.profile__cart-remove-btn:hover {
+  color: #b91c1c;
 }

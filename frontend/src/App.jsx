@@ -1,3 +1,5 @@
+import { onAuthStateChanged } from "firebase/auth";
+
 import React, { useState, useEffect } from "react";
 import { Provider } from "react-redux";
 import store from "./redux/store";
@@ -12,8 +14,30 @@ import Profile from "./userDashBoard/usercomponents/userpages/Profile";
 import WishList from "./userDashBoard/usercomponents/userpages/WishList";
 import Cart from "./userDashBoard/usercomponents/userpages/Cart";
 import Search from "./userDashBoard/usercomponents/userpages/Search";
-
+import Authentication from "./userDashBoard/Authentication/Authentication.jsx";
 const App = () => {
+  /*  const [user, setUser] = useState(null);
+  const [isFetching, setIsFetching] = useState(true);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+        setIsFetching(false);
+        return;
+      } else {
+        setUser(null);
+        setIsFetching(false);
+      }
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+if (isFetching) { return <div>Loading...</div>;  
+}
+
+ */
   const [isAdmin, setIsAdmin] = useState(null);
 
   useEffect(() => {
@@ -78,6 +102,11 @@ const App = () => {
             <Route path="/userDashBoard/wishlist" element={<WishList />} />
             <Route path="/userDashBoard/cart" element={<Cart />} />
             <Route path="/userDashBoard/search" element={<Search />} />
+            <Route path="/userDashBoard/Auth" element={<Authentication />} />
+            {/*  <Route
+              path="/userDashBoard/private"
+              element={<protectedRoute user={user} />}
+            /> */}
             <Route path="*" element={<Navigate to="/userDashBoard" />} />{" "}
             {/* Redirect invalid routes */}
           </>
