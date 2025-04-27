@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import "./Navbar.css";
 import Tooltip from "@mui/material/Tooltip"; // Import Tooltip
@@ -13,6 +13,17 @@ import { Link } from "react-router-dom"; // Import Link from react-router-dom
 function Navbar() {
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
   const navigate = useNavigate(); // Initialize useNavigate
+
+  // Avatar seed logic (shared with Profile)
+  const [avatarSeed, setAvatarSeed] = useState(() => {
+    // Try to get from localStorage, else generate and store
+    let seed = localStorage.getItem("avatarSeed");
+    if (!seed) {
+      seed = Math.random().toString(36).substring(2, 10);
+      localStorage.setItem("avatarSeed", seed);
+    }
+    return seed;
+  });
 
   const handleSearch = () => {
     if (searchQuery.trim()) {
@@ -68,7 +79,20 @@ function Navbar() {
           {/* Ensure this matches the route in App.jsx */}
           <span className="profile-span">
             <Tooltip title="Profile" arrow>
-              <AccountCircleIcon style={{ marginRight: "5px" }} />
+              {/* Show avatar image instead of AccountCircleIcon */}
+              <img
+                src={`https://api.dicebear.com/6.x/adventurer/svg?seed=${avatarSeed}`}
+                alt="avatar"
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: "50%",
+                  marginRight: 5,
+                  verticalAlign: "middle",
+                  objectFit: "cover",
+                  background: "#eee",
+                }}
+              />
             </Tooltip>
           </span>
         </Link>
