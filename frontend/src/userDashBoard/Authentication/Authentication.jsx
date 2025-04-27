@@ -1,70 +1,119 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Authentication.css";
-import { useState } from "react";
 import { Navigate } from "react-router-dom";
-
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { auth } from "../../firebase/firebase.js";
-/* import { set } from "mongoose"; */
 
 function Authentication({ user }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLogin, setIsLogin] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [redirect, setRedirect] = useState(false);
 
-  const handleMethodChnage = () => {
+  const handleMethodChange = () => {
     setIsLogin(!isLogin);
+    setError("");
+    setSuccess("");
   };
 
-  const handleSignUp = () => {
-    if (!email || !password) return;
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(user);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-      });
+  const handleSignUp = async () => {
+    setError("");
+    setSuccess("");
+    if (!email || !password) {
+      setError("Please enter both email and password.");
+      return;
+    }
+    setLoading(true);
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      setSuccess("Sign up successful! Redirecting...");
+      setTimeout(() => setRedirect(true), 1000);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleSignIn = () => {
-    /*  if (!email || !password) return; */
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(user);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-      });
+  const handleSignIn = async () => {
+    setError("");
+    setSuccess("");
+    if (!email || !password) {
+      setError("Please enter both email and password.");
+      return;
+    }
+    setLoading(true);
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+
+      // Check if the user is an admin (by email only)
+      const adminEmail = import.meta.env.VITE_ADMIN_EMAIL;
+      if (email === adminEmail) {
+        localStorage.setItem("isAdmin", true);
+      } else {
+        localStorage.setItem("isAdmin", false);
+      }
+      setSuccess("Login successful! Redirecting...");
+      setTimeout(() => setRedirect(true), 1000);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const hangleEmailChange = (e) => {
+  const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
-    {
-      if (user) {
-        return <Navigate to="/userDashBoard"></Navigate>;
-      }
+  };
+
+  const handleForgotPassword = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+    if (!email) {
+      setError("Please enter your email to reset password.");
+      return;
+    }
+    setLoading(true);
+    try {
+      await sendPasswordResetEmail(auth, email);
+      setSuccess("Password reset email sent!");
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    if (isLogin) {
+      handleSignIn();
+    } else {
+      handleSignUp();
+    }
+  };
+
+  if (user || redirect) {
+    return <Navigate to="/userDashBoard" />;
+  }
+
   return (
     <div className="auth__container">
-      <form className="form">
-        {isLogin && <p id="heading">Login</p>}
-        {!isLogin && <p id="heading">Sign up</p>}
+      <form className="form" onSubmit={handleFormSubmit}>
+        {isLogin ? <p id="heading">Login</p> : <p id="heading">Sign up</p>}
+        {error && <div className="auth-error">{error}</div>}
+        {success && <div className="auth-success">{success}</div>}
         <div className="field">
           <svg
             className="input-icon"
@@ -80,9 +129,11 @@ function Authentication({ user }) {
             autoComplete="off"
             placeholder="Email"
             className="input-field"
-            type="text"
+            type="email"
             id="email"
-            onChange={hangleEmailChange}
+            value={email}
+            onChange={handleEmailChange}
+            disabled={loading}
           />
         </div>
         <div className="field">
@@ -101,18 +152,33 @@ function Authentication({ user }) {
             className="input-field"
             type="password"
             id="password"
+            value={password}
             onChange={handlePasswordChange}
+            disabled={loading}
           />
         </div>
         <div className="btn">
-          <button type="button" className="button1" onClick={handleSignIn}>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Login&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <button type="submit" className="button1" disabled={loading}>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{isLogin ? "Login" : "Sign Up"}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           </button>
-          <button type="button" className="button2" onClick={handleSignUp}>
-            Sign Up
+          <button
+            type="button"
+            className="button2"
+            onClick={handleMethodChange}
+            disabled={loading}
+          >
+            {isLogin ? "Sign Up ?" : "Login ?"}
           </button>
         </div>
-        <button className="button3">Forgot Password</button>
+        <button
+          className="button3"
+          type="button"
+          onClick={handleForgotPassword}
+          disabled={loading}
+        >
+          Forgot Password
+        </button>
       </form>
     </div>
   );

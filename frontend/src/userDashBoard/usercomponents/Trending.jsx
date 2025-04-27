@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import "./Trending.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +17,8 @@ function Trending() {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
+  const [visibleStart, setVisibleStart] = useState(0);
+  const timerRef = useRef(null);
   const dispatch = useDispatch();
   const wishlist = useSelector((state) => state.wishlist);
   const cart = useSelector((state) => state.cart);
@@ -34,6 +36,19 @@ function Trending() {
         setLoading(false);
       });
   }, []);
+
+  // Cycle visible books every 2 minutes
+  useEffect(() => {
+    if (books.length === 0) return;
+    timerRef.current && clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => {
+      setVisibleStart((prev) => {
+        const next = prev + 10;
+        return next >= books.length ? 0 : next;
+      });
+    }, 2 * 60 * 1000); // 2 minutes
+    return () => clearInterval(timerRef.current);
+  }, [books]);
 
   const toggleWishlist = (book, e) => {
     e.stopPropagation();
@@ -63,7 +78,7 @@ function Trending() {
         <p>Loading...</p>
       ) : (
         <div className="trending__books flex flex-wrap justify-center">
-          {books.map((book) => (
+          {books.slice(visibleStart, visibleStart + 12).map((book) => (
             <div
               className="book cursor-pointer"
               key={book._id}

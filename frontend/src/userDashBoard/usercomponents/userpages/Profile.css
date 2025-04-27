@@ -44,6 +44,30 @@
   z-index: 2;
 }
 
+.profile__wish,
+.profile__sale {
+  position: relative;
+}
+
+.profile__close-btn {
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  margin-left: 8px;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  z-index: 3;
+}
+.profile__close-btn:hover {
+  color: #e53e3e;
+}
+
 .profile__right {
   align-items: center !important;
   padding: 20px;
@@ -239,4 +263,47 @@
 
 .profile__cart-remove-btn:hover {
   color: #b91c1c;
+}
+
+.profile__right-section {
+  background: #e8e8e8;
+  border: solid 1px rgb(255, 255, 255);
+  border-radius: 20px;
+  box-shadow: 0 4px 32px 0 rgba(60, 80, 180, 0.18),
+    0 1.5px 8px 0 rgba(120, 60, 180, 0.1), 0 0 16px 2px #a5a79e88,
+    0 2px 16px 0 #21212144;
+  padding: 20px;
+  margin-top: 20px;
+  min-width: 320px;
+  max-width: 400px;
+  z-index: 10;
+  position: relative;
+}
+
+.profile__right-section .profile__wish,
+.profile__right-section .profile__sale {
+  display: flex;
+  justify-content: center;
+  padding-top: 10px;
+  background: #e8e8e8;
+  z-index: 2;
+  position: sticky;
+  top: 0;
+}
+
+.profile__right-section .btn-shine {
+  position: static;
+  transform: none;
+  margin: 16px 0;
+}
+
+@keyframes fadeInPanel {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

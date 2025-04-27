@@ -84,7 +84,7 @@ function Search() {
         </Tooltip>
         <input
           type="text"
-          placeholder="Search by title or author"
+          placeholder="Search by title, author, genre, or ISBN"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           className="search-input"
@@ -98,12 +98,28 @@ function Search() {
       {loading ? (
         <p className="loading-text">Loading...</p>
       ) : (
-        <div className="search-results">
+        <div className="trending__books">
           {results.length > 0 ? (
             results.map((book) => (
-              <div key={book._id} className="search-result-item">
-                <h3>{book.title}</h3>
-                <p>by {book.author}</p>
+              <div key={book._id} className="book">
+                <div className="book__image-container">
+                  <img
+                    src={book.image || "/default-book.png"}
+                    alt={book.title}
+                    className="book__image"
+                  />
+                </div>
+                <div className="book__title">{book.title}</div>
+                <div className="book__author">by {book.author}</div>
+                {book.genre && (
+                  <div className="book__genre">Genre: {book.genre}</div>
+                )}
+                {book.isbn && (
+                  <div className="book__isbn">ISBN: {book.ISBN}</div>
+                )}
+                <div className="book__price">
+                  R{book.price ? book.price : "N/A"}
+                </div>
                 <div className="book__actions">
                   <FavoriteIcon
                     onClick={() => toggleWishlist(book)}
