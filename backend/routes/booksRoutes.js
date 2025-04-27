@@ -4,18 +4,40 @@ import { Book } from "../models/bookModel.js";
 const router = express.Router();
 router.post("/", async (request, response) => {
   try {
+    const {
+      title,
+      author,
+      publishYear,
+      ISBN,
+      genre,
+      price,
+      stock,
+      onSale,
+      image,
+    } = request.body;
+
     if (
-      !request.body.title ||
-      !request.body.author ||
-      !request.body.publishYear
+      !title ||
+      !author ||
+      !publishYear ||
+      !ISBN ||
+      !genre ||
+      price === undefined ||
+      stock === undefined
     ) {
       return response.status(400).send({ message: "Please fill all fields" });
     }
 
     const newBook = {
-      title: request.body.title,
-      author: request.body.author,
-      publishYear: request.body.publishYear,
+      title,
+      author,
+      publishYear,
+      ISBN,
+      genre,
+      price,
+      stock,
+      onSale: !!onSale,
+      image: image || "",
     };
 
     const book = await Book.create(newBook);
@@ -66,16 +88,44 @@ router.get("/", async (request, response) => {
 
 router.put("/:id", async (request, response) => {
   try {
+    const {
+      title,
+      author,
+      publishYear,
+      ISBN,
+      genre,
+      price,
+      stock,
+      onSale,
+      image,
+    } = request.body;
+
     if (
-      !request.body.title ||
-      !request.body.author ||
-      !request.body.publishYear
+      !title ||
+      !author ||
+      !publishYear ||
+      !ISBN ||
+      !genre ||
+      price === undefined ||
+      stock === undefined
     ) {
       return response.status(400).send({ message: "Please fill all fields" });
     }
 
     const { id } = request.params;
-    const result = await Book.findByIdAndUpdate(id, request.body);
+    const updateData = {
+      title,
+      author,
+      publishYear,
+      ISBN,
+      genre,
+      price,
+      stock,
+      onSale: !!onSale,
+      image: image || "",
+    };
+
+    const result = await Book.findByIdAndUpdate(id, updateData);
 
     if (!result) {
       return response.status(404).send({ message: "Book not found" });

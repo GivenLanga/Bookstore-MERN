@@ -1,27 +1,37 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { removeFromCart } from "../../../redux/slices/cartSlice";
-import "./Cart.css"; // Add CSS file for styling
+import "../Trending.css"; // Use Trending styles
 
 function Cart() {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
 
   return (
-    <div className="cart-container">
-      <h1 className="cart-title">Your Cart</h1>
+    <div className="trending">
+      <h1 className="trending__title">Your Cart</h1>
       {cart.length > 0 ? (
-        <div className="cart-items">
+        <div className="trending__books">
           {cart.map((item) => (
-            <div key={item._id} className="cart-item">
-              <h3>{item.title}</h3>
-              <p>by {item.author}</p>
-              <button
-                className="remove-button"
-                onClick={() => dispatch(removeFromCart(item))}
-              >
-                Remove
-              </button>
+            <div key={item._id} className="book">
+              <div className="book__image-container">
+                <img
+                  src={item.image || "/placeholder-book.png"}
+                  alt={item.title}
+                  className="book__image"
+                />
+              </div>
+              <div className="book__title">{item.title}</div>
+              <div className="book__author">{item.author}</div>
+              {item.price && <div className="book__price">${item.price}</div>}
+              <div className="book__actions">
+                <button
+                  className="remove-button"
+                  onClick={() => dispatch(removeFromCart(item))}
+                >
+                  Remove
+                </button>
+              </div>
             </div>
           ))}
         </div>

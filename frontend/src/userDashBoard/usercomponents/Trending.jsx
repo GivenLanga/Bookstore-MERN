@@ -81,6 +81,17 @@ function Trending() {
         <div className="trending__books">
           {books.map((book) => (
             <div className="book" key={book._id}>
+              <div className="book__image-container">
+                <img
+                  className="book__image"
+                  src={
+                    book.image && book.image.trim() !== ""
+                      ? book.image
+                      : "/placeholder-book.png"
+                  }
+                  alt={book.title}
+                />
+              </div>
               <h3 className="book__title">{book.title}</h3>
               <p className="book__author">by {book.author}</p>
               <div className="book__actions">

@@ -54,6 +54,44 @@ function ShowBook() {
           </div>
 
           <div className="my-4">
+            <span className="text-xl mr-4 text-gray-500">ISBN</span>
+            <span>{book.ISBN || "N/A"}</span>
+          </div>
+
+          <div className="my-4">
+            <span className="text-xl mr-4 text-gray-500">Genre</span>
+            <span>{book.genre || "N/A"}</span>
+          </div>
+
+          <div className="my-4">
+            <span className="text-xl mr-4 text-gray-500">Price</span>
+            <span>{book.price !== undefined ? `$${book.price}` : "N/A"}</span>
+          </div>
+
+          <div className="my-4">
+            <span className="text-xl mr-4 text-gray-500">Stock</span>
+            <span>{book.stock !== undefined ? book.stock : "N/A"}</span>
+          </div>
+
+          <div className="my-4">
+            <span className="text-xl mr-4 text-gray-500">On Sale</span>
+            <span>{book.onSale ? "Yes" : "No"}</span>
+          </div>
+
+          <div className="my-4">
+            <span className="text-xl mr-4 text-gray-500">Image</span>
+            {book.image ? (
+              <img
+                src={book.image}
+                alt={book.title}
+                style={{ maxWidth: 120 }}
+              />
+            ) : (
+              "N/A"
+            )}
+          </div>
+
+          <div className="my-4">
             <span className="text-xl mr-4 text-gray-500">Created Time</span>
             <span>
               {book.createAt ? new Date(book.createAt).toString() : "N/A"}
