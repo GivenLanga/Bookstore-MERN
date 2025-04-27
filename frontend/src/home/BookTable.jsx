@@ -2,6 +2,9 @@ import { Link } from "react-router-dom";
 import { AiOutlineEdit } from "react-icons/ai";
 import { BsInfoCircle } from "react-icons/bs";
 import { MdOutlineAddBox, MdDeleteOutline } from "react-icons/md";
+import InfoIcon from "@mui/icons-material/Info";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 function BookTable({ books }) {
   return (
@@ -37,13 +40,22 @@ function BookTable({ books }) {
             <td className="border border-slate-700 rounded-md text-center">
               <div className="flex justify-center gap-x-4">
                 <Link to={`/books/details/${book._id}`}>
-                  <BsInfoCircle className="text-sky-800 text-2xl" />
+                  <InfoIcon
+                    className="text-blue-700 text-2xl hover:text-blue-900 transition-colors duration-200"
+                    titleAccess="Details"
+                  />
                 </Link>
                 <Link to={`/books/edit/${book._id}`}>
-                  <AiOutlineEdit className="text-yellow-600 text-2xl" />
+                  <EditIcon
+                    className="text-yellow-600 text-2xl hover:text-yellow-800 transition-colors duration-200"
+                    titleAccess="Edit"
+                  />
                 </Link>
                 <Link to={`/books/delete/${book._id}`}>
-                  <MdDeleteOutline className="text-red-600 text-2xl" />
+                  <DeleteForeverIcon
+                    className="text-red-600 text-2xl hover:text-red-800 transition-colors duration-200"
+                    titleAccess="Delete"
+                  />
                 </Link>
               </div>
             </td>

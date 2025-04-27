@@ -8,7 +8,7 @@ import BookSingleCard from "./BookSingleCard";
 
 function BookCard({ books }) {
   return (
-    <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       {books.map((item) => (
         <BookSingleCard key={item._id} book={item} />
       ))}

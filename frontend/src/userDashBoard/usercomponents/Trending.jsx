@@ -9,32 +9,14 @@ import {
 import { addToCart, removeFromCart } from "../../redux/slices/cartSlice";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-
-class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false };
-  }
-
-  static getDerivedStateFromError(error) {
-    return { hasError: true };
-  }
-
-  componentDidCatch(error, errorInfo) {
-    console.error("Error caught in ErrorBoundary:", error, errorInfo);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return <h2>Something went wrong. Please try again later.</h2>;
-    }
-    return this.props.children;
-  }
-}
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+import PersonIcon from "@mui/icons-material/Person";
+import BookModel from "../../home/BookModel";
 
 function Trending() {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedBook, setSelectedBook] = useState(null);
   const dispatch = useDispatch();
   const wishlist = useSelector((state) => state.wishlist);
   const cart = useSelector((state) => state.cart);
@@ -44,7 +26,7 @@ function Trending() {
     axios
       .get("http://localhost:3000/books")
       .then((response) => {
-        setBooks(response.data.data || []); // Adjust based on API response structure
+        setBooks(response.data.data || []);
         setLoading(false);
       })
       .catch((error) => {
@@ -53,7 +35,8 @@ function Trending() {
       });
   }, []);
 
-  const toggleWishlist = (book) => {
+  const toggleWishlist = (book, e) => {
+    e.stopPropagation();
     if (
       Array.isArray(wishlist) &&
       wishlist.find((item) => item._id === book._id)
@@ -64,7 +47,8 @@ function Trending() {
     }
   };
 
-  const toggleCart = (book) => {
+  const toggleCart = (book, e) => {
+    e.stopPropagation();
     if (Array.isArray(cart) && cart.find((item) => item._id === book._id)) {
       dispatch(removeFromCart(book));
     } else {
@@ -78,9 +62,14 @@ function Trending() {
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <div className="trending__books">
+        <div className="trending__books flex flex-wrap justify-center">
           {books.map((book) => (
-            <div className="book" key={book._id}>
+            <div
+              className="book cursor-pointer"
+              key={book._id}
+              onClick={() => setSelectedBook(book)}
+              style={{ position: "relative" }}
+            >
               <div className="book__image-container">
                 <img
                   className="book__image"
@@ -93,10 +82,34 @@ function Trending() {
                 />
               </div>
               <h3 className="book__title">{book.title}</h3>
-              <p className="book__author">by {book.author}</p>
+              <div className="flex items-center justify-center gap-1 book__author">
+                <PersonIcon className="text-blue-400" fontSize="small" />
+                <span> {book.author}</span>
+              </div>
+              {book.price !== undefined && (
+                <div className="book__price flex items-center justify-center gap-1">
+                  {book.onSale ? (
+                    <>
+                      <span className="text-red-600 font-bold">
+                        R{book.price}
+                      </span>
+                      <LocalOfferIcon
+                        className="text-red-500"
+                        fontSize="small"
+                        titleAccess="On Sale"
+                        style={{ verticalAlign: "middle" }}
+                      />
+                    </>
+                  ) : (
+                    <span className="text-blue-700 font-semibold">
+                      R{book.price}
+                    </span>
+                  )}
+                </div>
+              )}
               <div className="book__actions">
                 <FavoriteIcon
-                  onClick={() => toggleWishlist(book)}
+                  onClick={(e) => toggleWishlist(book, e)}
                   style={{
                     cursor: "pointer",
                     color: wishlist.find((item) => item._id === book._id)
@@ -105,7 +118,7 @@ function Trending() {
                   }}
                 />
                 <ShoppingCartIcon
-                  onClick={() => toggleCart(book)}
+                  onClick={(e) => toggleCart(book, e)}
                   style={{
                     cursor: "pointer",
                     color: cart.find((item) => item._id === book._id)
@@ -118,14 +131,11 @@ function Trending() {
           ))}
         </div>
       )}
+      {selectedBook && (
+        <BookModel book={selectedBook} onClose={() => setSelectedBook(null)} />
+      )}
     </div>
   );
 }
 
-export default function TrendingWithBoundary() {
-  return (
-    <ErrorBoundary>
-      <Trending />
-    </ErrorBoundary>
-  );
-}
+export default Trending;

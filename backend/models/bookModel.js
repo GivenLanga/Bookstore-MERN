@@ -11,6 +11,7 @@ const bookSchema = mongoose.Schema(
     stock: { type: Number, required: true },
     onSale: { type: Boolean, default: false },
     image: { type: String, default: "" },
+    description: { type: String, default: "" }, // <-- Added field
   },
   {
     timestamps: true,
