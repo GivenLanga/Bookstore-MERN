@@ -1,3 +1,10 @@
+# Project Link: https://bookworl.netlify.app/
+
+# Admin Login:
+
+Email: adminbook@gmail.com
+Password: Adimn@2025
+
 # BookVerse - MERN Book Store
 
 BookVerse is a full-stack web application for browsing, searching, and managing books, built with the MERN stack (MongoDB, Express, React, Node.js) and Firebase Authentication.

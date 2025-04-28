@@ -4,6 +4,7 @@ import Backbutton from "../components/Backbutton";
 import Spinner from "../components/Spinner";
 import axios from "axios";
 import { useSnackbar } from "notistack";
+import SaveIcon from "@mui/icons-material/Save";
 
 function CreateBooks() {
   const [title, setTitle] = useState("");
@@ -184,9 +185,10 @@ function CreateBooks() {
             />
           </div>
           <button
-            className="px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold shadow hover:bg-blue-700 transition-all duration-200 mt-4"
+            className="flex items-center gap-2 px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold shadow hover:bg-blue-700 transition-all duration-200 mt-4"
             onClick={handleSaveBook}
           >
+            <SaveIcon />
             Save
           </button>
         </div>
